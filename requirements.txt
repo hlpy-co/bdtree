@@ -1,0 +1,10 @@
+# Dev
+-e .
+
+# Testing
+pylint
+pytest
+coverage
+
+# Packaging
+build
