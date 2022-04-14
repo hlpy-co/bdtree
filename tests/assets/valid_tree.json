@@ -1,0 +1,34 @@
+{
+  "children": [
+    {
+      "field": "category",
+      "condition": "=",
+      "value": "veicolo",
+      "children": [
+        {
+          "field": "km",
+          "condition": "<",
+          "value": 25,
+          "result": {
+            "message": "foo"
+          }
+        },
+        {
+          "field": "km",
+          "condition": "BETWEEN",
+          "value": [2, 25],
+          "result": {
+            "message": "bar"
+          }
+        }
+      ]
+    },
+    {
+      "field": "category",
+      "value": "motociclo",
+      "result": {
+        "message": "beep beep"
+      }
+    }
+  ]
+}

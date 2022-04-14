@@ -1,0 +1,2 @@
+class TreeSchemaError(Exception):
+    pass
