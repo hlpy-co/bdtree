@@ -1,6 +1,7 @@
 import json
 import unittest
 
+from bdtree.exceptions import TreeSchemaError
 from bdtree.readers import BdTreeJsonReader
 
 
@@ -15,11 +16,15 @@ class TestBdTreeJsonReader(unittest.TestCase):
         with open('tests/assets/invalid_tree.json', 'r') as file:
             self.invalid_json = json.loads(file.read())
 
-        self.json_reader = BdTreeJsonReader(self.valid_json)
+        self.json_reader = BdTreeJsonReader()
 
-    def test_read(self):
-        result = self.json_reader.read()
+    def test_read_valid_json(self):
+        result = self.json_reader.read(self.valid_json)
         print(result)
+
+    def test_read_invalid_json(self):
+        with self.assertRaises(TreeSchemaError):
+            self.json_reader.read(self.invalid_json)
 
 
 if __name__ == '__main__':

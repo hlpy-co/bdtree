@@ -8,6 +8,10 @@ class BdTree:
     def __init__(self, root: BdNode):
         self.__root = root
 
+    @property
+    def root(self) -> BdNode:
+        return self.__root
+
     def decide(self, input: Dict[str, Any]) -> Optional[Any]:
         return self.__nested_decide(self.__root, input)
 

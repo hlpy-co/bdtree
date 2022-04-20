@@ -1,14 +1,15 @@
 from abc import ABC, abstractmethod
-from typing import Dict, Type, Any, Iterable
+from typing import Dict, Type, Any, Iterable, TypeVar, Generic
 
 from bdtree import BdTree
 from ..condition import Condition, Equal, GreaterThan, GreaterThanOrEqual, LessThan, LessThanOrEqual, In, \
     SizedCondition, BetweenInclude, BetweenExclude
 from ..exceptions import TreeSchemaError
 
+BdTreeReaderInput = TypeVar("BdTreeReaderInput")
 
-class BdTreeReader(ABC):
-    ROOT_KEY = 'root'
+
+class BdTreeReader(ABC, Generic[BdTreeReaderInput]):
 
     def __init__(self):
         super().__init__()
@@ -26,7 +27,7 @@ class BdTreeReader(ABC):
         }
 
     @abstractmethod
-    def read(self) -> BdTree:
+    def read(self, input: BdTreeReaderInput) -> BdTree:
         """
         :return:
         :raise TreeSchemaError

@@ -3,23 +3,20 @@ from typing import Dict, Any, Optional
 from bdtree import BdTree, BdNode
 from bdtree.exceptions import TreeSchemaError
 from bdtree.readers import BdTreeReader
+from bdtree.readers.bdtree_reader import BdTreeReaderInput
 
 
-class BdTreeJsonReader(BdTreeReader):
+class BdTreeJsonReader(BdTreeReader[Dict[str, Any]]):
 
-    def __init__(self, json: Dict[str, Any]):
-        super().__init__()
-        self._json = json
-
-    def read(self) -> BdTree:
-        return BdTree(self.__read_recursive(self._json))
+    def read(self, input: BdTreeReaderInput) -> BdTree:
+        return BdTree(self.__read_recursive(input))
 
     def __read_recursive(self, json: Dict[str, Any]) -> BdNode:
         field = self.__process_field(json)
         condition = self._read_condition(
             operator=self.__process_condition(json),
             value=self.__process_value(json),
-        ) if field != self.ROOT_KEY else None
+        ) if field != BdNode.ROOT_KEY else None
         children = self.__process_children(json)
         result = self.__process_result(json)
 
@@ -34,8 +31,9 @@ class BdTreeJsonReader(BdTreeReader):
             result=result,
         )
 
-    def __process_field(self, json: Dict[str, Any]) -> str:
-        field = json.get('field', self.ROOT_KEY)
+    @staticmethod
+    def __process_field(json: Dict[str, Any]) -> str:
+        field = json.get('field', BdNode.ROOT_KEY)
         if field is not None and isinstance(field, str):
             return field
         raise TreeSchemaError(f"The field value {field} must be a string.")
